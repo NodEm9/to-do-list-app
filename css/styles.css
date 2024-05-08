@@ -91,6 +91,10 @@ ol li:nth-child(even) {
   opacity: .7;
 }
 
+ .move-up {
+  animation: move-up 0.5s;
+}
+
 
 @media all and (max-width: 500px){
   body {
@@ -109,5 +113,14 @@ ol li:nth-child(even) {
 
   ol {
     width: 100%;
+  }
+}
+
+@keyframes move-up {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50px);
   }
 }
