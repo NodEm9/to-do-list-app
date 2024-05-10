@@ -1,4 +1,5 @@
-let form = $('#todo-form');
+$(document).ready(function(){
+  let form = $('#todo-form');
 
 form.on('submit', function (e) {
   e.preventDefault();
@@ -32,7 +33,37 @@ form.on('submit', function (e) {
   // append the remove button to the list item
   li.append(remove);
 
+   // make the list items draggable
+   li.attr("draggable", true);
+   li.on("dragstart", function (event) {
+     event.originalEvent.dataTransfer.setData("text/plain", li.index());
+   });
+ });
+
+ // make the list droppable
+ let todoList = document.getElementById("todo-list");
+ todoList.addEventListener("dragover", function (event) {
+   event.preventDefault();
+ });
+ todoList.addEventListener("drop", function (event) {
+   event.preventDefault();
+   let index = event.dataTransfer.getData("text/plain");
+   let draggedItem = $("#todo-list li").eq(index);
+   let targetIndex = $(event.target).closest("li").index();
+
+   if (index !== targetIndex.toString()) {
+     // Remove the dragged item and insert it at the correct position
+     draggedItem.detach();
+     if (index < targetIndex) {
+       $(event.target).closest("li").after(draggedItem);
+     } else {
+       $(event.target).closest("li").before(draggedItem);
+     }
+   }
+ });
+
 });
+
 
 
 
