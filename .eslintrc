@@ -1,0 +1,30 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [ "eslint:recommended"],
+    "rules": {
+      "no-console": "off",
+      "quotes": ["error", "single"],
+      "no-unused-vars": "off",
+      "no-undef": "off",
+      "no-constant-condition": "off",
+      "no-empty": "off",
+      "no-irregular-whitespace": "off",
+      "no-unsafe-negation": "off",
+      "no-useless-escape": "off",
+      "no-obj-calls": "off",
+      "no-extend-native": "off",
+      "no-implicit-globals": "off",
+      "no-implicit-coercion": "off",
+      "no-extra-boolean-cast": "off",
+      "no-empty-function": "off",
+      "no-eval": "off",
+      "no-else-return": "off",
+      "no-dupe-keys": "off",
+      "no-dupe-args": "off",
+      "no-duplicate-case": "off",
+      "no-undef-init": "off"
+    }
+}
