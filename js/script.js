@@ -4,15 +4,12 @@ $(document).ready(function () {
   form.on('submit', function (e) {
     e.preventDefault();
     let inputValue = $('#todo-input').val();
-    let inputTextContent = document.createTextNode(inputValue);
-    inputValue = inputTextContent.textContent;
     inputValue = inputValue.trim();
     inputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
     inputValue = inputValue.replace(/\s+/g, ' ');
 
     // create a li element and add the input value to it
     let li = $('<li></li>');
-    li.addClass('list-group-item');
     li.append(inputValue);
 
     // if the input value is empty, alert the user
@@ -29,6 +26,13 @@ $(document).ready(function () {
       $(this).toggleClass('strike');
     });
 
+    let btnContainer = $('<div></div>');
+
+    // create edit todo button
+    let edit = $('<button></button>');
+    edit.addClass('btn-primary');
+    edit.text('Edit');
+
     // create a remove button
     let remove = $('<button></button>');
     remove.addClass('btn-danger');
@@ -37,8 +41,11 @@ $(document).ready(function () {
     remove.on('click', function () {
       li.remove();
     });
-    // append the remove button to the list item
-    li.append(remove);
+
+    // append the remove and edit button to the list item
+    btnContainer.append(remove);
+    btnContainer.append(edit);
+    li.append(btnContainer);
 
     // make the list items draggable
     li.attr("draggable", true);
@@ -47,13 +54,15 @@ $(document).ready(function () {
     });
 
     // save the todo list to local storage
-    let todoListItems = $('#todo-list').children();
+    // let todoListItems = $('#todo-list');
+    let todoListItems = $('#todo-list');
     let todoListArray = [];
     for (let i = 0; i < todoListItems.length; i++) {
-      todoListArray.push(todoListItems[i].innerText);
+      todoListArray.push(todoListItems[i].innerText.slice(0, -6)); // remove the 'X' from the list item
+      localStorage.setItem('todoList', JSON.stringify(todoListArray));
     }
-    localStorage.setItem('todoList', JSON.stringify(todoListArray));
   });
+
 
   // make the list droppable
   let todoList = document.getElementById("todo-list");
@@ -79,24 +88,111 @@ $(document).ready(function () {
 
   // retrieve the todo list from local storage
   let retrievedTodoList = JSON.parse(localStorage.getItem('todoList'));
-  $('#todo-list').empty();
+  // $('#todo-list').empty();
   let retrievedTodoListButton = $('.button');
   retrievedTodoListButton.on('click', function () {
     for (let i = 0; i < retrievedTodoList.length; i++) {
       let li = $('<li></li>');
-      li.addClass('list-group-item');
       li.append(retrievedTodoList[i]);
       $('#todo-list').append(li);
       li.on('dblclick', function () {
         $(this).toggleClass('strike');
       });
+      // create a buttons container
+      let btnContainer = $('<div></div>');
+
+      let edit = $('<button></button>');
+      edit.addClass('btn-primary');
+      edit.text('Edit');
+      edit.on('click', function () {
+        let modal = $('<div></div>');
+        modal.addClass('modal');
+        modal.attr('id', 'edit-modal');
+        let modalContent = $('<div></div>');
+        modalContent.addClass('modal-content');
+        let modalHeader = $('<div></div>');
+        modalHeader.addClass('modal-header');
+        let modalTitle = $('<h2></h2>');
+        modalTitle.text('Edit Todo');
+        let modalBody = $('<div></div>');
+        modalBody.addClass('modal-body text-center');
+        let modalFooter = $('<div></div>');
+        modalFooter.addClass('modal-footer');
+        let close = $('<span></span>');
+        close.addClass('close');
+        close.text('X');
+        let editInput = $('<input></input>');
+        editInput.attr('type', 'text');
+        editInput.attr('id', 'edit-input');
+        editInput.val(li.text());
+        let save = $('<button></button>');
+        save.addClass('btn-primary');
+        save.text('Save');
+    
+        $('#edit-modal').css('display', 'block');
+        close.on('click', function () {
+          $('#edit-modal').css('display', 'none');
+        });
+
+        // save the edited value to the list item when the save button is clicked
+        save.on('click', function () {
+          let editedValue = $('#edit-input').val();
+          editedValue = editedValue.trim();
+          editedValue = editedValue.charAt(0).toUpperCase() + editedValue.slice(1);
+          editedValue = editedValue.replace(/\s+/g, ' ');
+          let editedItem = $('#edit-input').val();
+          let editedItemIndex = $('#todo-list li').index(li);
+          let todoListItems = $('#todo-list');
+          let todoListArray = [];
+          for (let i = 0; i < todoListItems.length; i++) {
+            if (i === editedItemIndex) {
+              todoListArray.push(editedItem);
+            } else {
+              todoListArray.push(todoListItems[i].innerText.slice(0, -6));
+            }
+          }
+          localStorage.setItem('todoList', JSON.stringify(todoListArray));
+          li.text(editedValue);
+          li.append(btnContainer);
+          $('#edit-modal').css('display', 'none');
+        });
+
+        modalHeader.append(modalTitle);
+        modalHeader.append(close);
+        modalBody.append(editInput);
+        modalFooter.append(save);
+        modalContent.append(modalHeader);
+        modalContent.append(modalBody);
+        modalContent.append(modalFooter);
+        modal.append(modalContent);
+        $('body').append(modal);
+
+        modal.on('click', function (event) {
+          if (event.target === modal[0]) {
+            modal.css('display', 'none');
+          }
+        });
+
+        window.addEventListener('keydown', function (event) {
+          if (event.key === 'Escape') {
+            modal.css('display', 'none');
+          }
+        });
+      });
+
+      // create a remove button
       let remove = $('<button></button>');
       remove.addClass('btn-danger');
       remove.text('X');
       remove.on('click', function () {
         li.remove();
       });
-      li.append(remove);
+
+      // append the remove and edit button to the list item
+      btnContainer.append(edit);
+      btnContainer.append(remove);
+      li.append(btnContainer);
+      // make the list items draggable
       li.attr("draggable", true);
       li.on("dragstart", function (event) {
         event.originalEvent.dataTransfer.setData("text/plain", li.index());
