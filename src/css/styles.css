@@ -1,0 +1,318 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f4;
+  line-height: 1.6;
+  font-size: 16px;
+  text-align: center;
+}
+
+.container {
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+header {
+  background-color: #000000;
+  color: #fff;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 50px;
+  list-style-type: none;
+}
+
+ul a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #fff;
+}
+
+ul a:hover,
+a:focus {
+  opacity: .7;
+}
+
+ul a.active {
+  color: #05d45f;
+}
+
+ul .button {
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus {
+  opacity: .7;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+form input[type="text"] {
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+form input[type="text"]:focus {
+  outline: none;
+  border-color: #333;
+}
+
+
+form input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+form input[type="submit"]:hover,
+form input[type="submit"]:focus {
+  opacity: .7;
+}
+
+form ol {
+  width: 100%;
+  display: inline-block;
+  height: auto;
+  padding: 10px;
+}
+
+ol li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #fff;
+  list-style: none;
+  color: #2c2c2c;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  flex: 1;
+  flex-shrink: 0;
+  flex-basis: 100%;
+}
+
+ol li:nth-child(even) {
+  background-color: #e8e5e5;
+}
+
+.strike {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 50%;
+  height: 20%;
+  margin: 15% auto;
+} 
+
+.is-active {
+  display: none;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#edit-input {
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#edit-input:focus {
+  outline: none;
+  border-color: #333;
+}
+
+.close {
+  color: #ff0000;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #05d45f;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary:hover, 
+.btn-primary:focus {
+  opacity: .7;
+}
+
+.btn-danger {
+  background-color: #ff0000;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  opacity: .7;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+}
+
+.move-up {
+  animation: move-up 0.5s;
+}
+
+
+@media all and (max-width: 500px) {
+  body {
+    margin-top: 0;
+  }
+
+  header {
+    padding: 20px 0;
+  }
+
+  .container {
+    margin-top: 30px;
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  form input[type="text"],
+  form input[type="submit"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  form ol {
+    width: 100%;
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+
+  .btn-primary {
+    margin-right: 10px;
+    width: 20%;
+  }
+
+  .btn-danger{
+    margin: 6px 0px;
+    width: 20%;
+  }
+
+  .modal {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    width: 90%;
+    height: auto;
+  }
+  
+}
+/* Share styles for mobile and tablet */
+@media all and (max-width: 780px) {
+  .container {
+    width: 100%;
+    padding: 0 30px;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  ol li .btn-container {
+    flex: 1;
+    flex-shrink: 0;
+    flex-basis: 10px;
+    min-height: auto;
+  }
+
+  .btn-container {
+    width: 100%;
+  }
+
+  .btn-primary {
+    margin-right: 10px;
+    width: 55px;
+  }
+
+  .btn-danger {
+    width: 55px;
+  }
+  
+}
+
+@keyframes move-up {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50px);
+  }
+}
