@@ -43,8 +43,8 @@ $(document).ready(function () {
     });
 
     // append the remove and edit button to the list item
-    btnContainer.append(remove);
     btnContainer.append(edit);
+    btnContainer.append(remove);
     li.append(btnContainer);
 
     // make the list items draggable
@@ -55,12 +55,12 @@ $(document).ready(function () {
 
     // save the todo list to local storage
     // let todoListItems = $('#todo-list');
-    let todoListItems = $('#todo-list');
+    let todoListItems = $('#todo-list li');
     let todoListArray = [];
     for (let i = 0; i < todoListItems.length; i++) {
-      todoListArray.push(todoListItems[i].innerText.slice(0, -6)); // remove the 'X' from the list item
-      localStorage.setItem('todoList', JSON.stringify(todoListArray));
+      todoListArray.push(todoListItems[i].innerText.slice(0, -5)); // remove the 'X' from the list item
     }
+    localStorage.setItem('todoList', JSON.stringify(todoListArray));
   });
 
 
@@ -101,9 +101,11 @@ $(document).ready(function () {
       // create a buttons container
       let btnContainer = $('<div></div>');
 
+      // create edit todo button
       let edit = $('<button></button>');
       edit.addClass('btn-primary');
       edit.text('Edit');
+
       edit.on('click', function () {
         let modal = $('<div></div>');
         modal.addClass('modal');
@@ -124,10 +126,19 @@ $(document).ready(function () {
         let editInput = $('<input></input>');
         editInput.attr('type', 'text');
         editInput.attr('id', 'edit-input');
-        editInput.val(li.text());
+        editInput.val(li.text().slice(0, -5));
         let save = $('<button></button>');
         save.addClass('btn-primary');
         save.text('Save');
+        modalHeader.append(modalTitle);
+        modalHeader.append(close);
+        modalBody.append(editInput);
+        modalFooter.append(save);
+        modalContent.append(modalHeader);
+        modalContent.append(modalBody);
+        modalContent.append(modalFooter);
+        modal.append(modalContent);
+        $('body').append(modal);
     
         $('#edit-modal').css('display', 'block');
         close.on('click', function () {
@@ -142,7 +153,7 @@ $(document).ready(function () {
           editedValue = editedValue.replace(/\s+/g, ' ');
           let editedItem = $('#edit-input').val();
           let editedItemIndex = $('#todo-list li').index(li);
-          let todoListItems = $('#todo-list');
+          let todoListItems = $('#todo-list li');
           let todoListArray = [];
           for (let i = 0; i < todoListItems.length; i++) {
             if (i === editedItemIndex) {
@@ -156,16 +167,6 @@ $(document).ready(function () {
           li.append(btnContainer);
           $('#edit-modal').css('display', 'none');
         });
-
-        modalHeader.append(modalTitle);
-        modalHeader.append(close);
-        modalBody.append(editInput);
-        modalFooter.append(save);
-        modalContent.append(modalHeader);
-        modalContent.append(modalBody);
-        modalContent.append(modalFooter);
-        modal.append(modalContent);
-        $('body').append(modal);
 
         modal.on('click', function (event) {
           if (event.target === modal[0]) {
