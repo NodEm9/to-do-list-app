@@ -3,7 +3,7 @@
 **This** app is a simple todo application project build as one of my school Achievement task. 
 
 #### About This App:
- To use the app is no different from any other todo app, although I tried to implement mordern UI patterns that will give users at least reasonable experience when they decide to use the todo application. Features such as ability to edit and delete added todo are a few.
+ To use the app is no different from any other todo app, although I tried to implement mordern UI patterns that will give users a user experience when they decide to use the todo application. Features such as ability to edit and delete added todo are a few.
 
  The cool part is users can not just add a todo but will be able to save the todo to their browser loacl storage where they are able to retrieve it later to either ``Fdit`` or ``Delete`` it enitrely if the todo was already completed. As for the edit todo, user will be propmted with a ``Modal`` that altomatically retrieve the content of the todo and give user the ability to make changes and click the save button to confirm upon completion, the specific todo is then updated and save to the local storage.
 
