@@ -17,7 +17,7 @@ body {
 .container {
   width: 60%;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 header {
@@ -125,7 +125,13 @@ ol li:nth-child(even) {
   color: #999;
 }
 
-.modal  {
+.list-group-item {
+  text-align: left;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.modal {
   position: fixed;
   z-index: 1;
   left: 0;
@@ -146,7 +152,7 @@ ol li:nth-child(even) {
   width: 50%;
   height: 20%;
   margin: 15% auto;
-} 
+}
 
 .is-active {
   display: none;
@@ -193,7 +199,7 @@ ol li:nth-child(even) {
   cursor: pointer;
 }
 
-.btn-primary:hover, 
+.btn-primary:hover,
 .btn-primary:focus {
   opacity: .7;
 }
@@ -233,7 +239,7 @@ ol li:nth-child(even) {
   }
 
   .container {
-    margin-top: 30px;
+    margin-top: 50px;
     width: 100%;
     padding: 0 15px;
   }
@@ -264,7 +270,7 @@ ol li:nth-child(even) {
     width: 20%;
   }
 
-  .btn-danger{
+  .btn-danger {
     margin: 6px 0px;
     width: 20%;
   }
@@ -279,8 +285,9 @@ ol li:nth-child(even) {
     width: 90%;
     height: auto;
   }
-  
+
 }
+
 /* Share styles for mobile and tablet */
 @media all and (max-width: 780px) {
   .container {
@@ -311,7 +318,7 @@ ol li:nth-child(even) {
   .btn-danger {
     width: 55px;
   }
-  
+
 }
 
 @keyframes move-up {
