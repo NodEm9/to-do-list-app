@@ -94,6 +94,7 @@ $(document).ready(function () {
       draggedItem.detach();
       if (index < targetIndex) {
         $(event.target).closest("li").after(draggedItem);
+
       } else {
         $(event.target).closest("li").before(draggedItem);
       }
@@ -256,7 +257,6 @@ function displayTodoList() {
   todoList.empty();
   todos.forEach((todo) => {
     let li = $("<li></li>");
-    
     li.text(todo);
     todoList.append(li);
   });
