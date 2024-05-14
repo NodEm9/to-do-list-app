@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo App</title>
-  <link rel="stylesheet" href="dist/styles.min.css">
-</head>
-<body>
-  <header>
-    <nav>
-      <ul>
-        <a href="index.html">Home</a>
-        <a class="button">Todos</a>
-      </ul>
-    </nav>
-  </header>
- <div class="container">
-  <h1>Todo App</h1>
-  <form id="todo-form">
-    <label for="todo-input"></label>
-    <input type="text" id="todo-input" placeholder="Enter your todo">
-    <input type="submit" value="Add Todo"/>
-  </form>
-  <ol id="todo-list"></ol>
- </div>
-  
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script src="dist/script.min.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo App</title>
+    <!-- <link rel="stylesheet" href="dist/styles.min.css" /> -->
+    <link rel="stylesheet" href="src/css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <a href="index.html">Home</a>
+          <a class="button">Todos</a>
+        </ul>
+      </nav>
+    </header>
+    <div class="container">
+      <h1>Todo App</h1>
+      <form id="todo-form">
+        <label for="todo-input"></label>
+        <input
+          type="text"
+          id="todo-input"
+          placeholder="Enter your todo"
+          autocomplete="off"
+        />
+        <input type="submit" value="Add Todo" />
+      </form>
+      <ol id="todo-list"></ol>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="dist/script.min.js"></script>
+
+  </body>
 </html>
