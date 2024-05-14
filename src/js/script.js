@@ -3,20 +3,19 @@ $(document).ready(function () {
 
   form.on("submit", function (e) {
     e.preventDefault();
-    let inputValue = $("#todo-input").val();
-    inputValue = inputValue.trim();
-    inputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(2);
-    inputValue = inputValue.replace(/\s+/g, " ");
+    let todoInput = $("#todo-input").val();
+    let todoText = todoInput.trim();
+
 
     // create a li element and add the input value to it
     let li = $("<li></li>");
 
     // if the input value is empty, alert the user
-    if (inputValue === "") {
-      return alert("Please enter a value");
-    } else {
-      $("#todo-list").append(li);
-      // clear the input field after adding the value to the list
+    if (todoText !== "") {
+      let todos = getSaveTodoList();
+      todos.push(todoText);
+      saveTodoList(todos);
+      displayTodoList();
       $("#todo-input").val("");
     }
 
@@ -56,9 +55,8 @@ $(document).ready(function () {
         // confirm the deletion of the task
         if (confirm("Are you sure you want to delete this task?") === true) {
           li.remove();
-          localStorage.removeItem("todoList", JSON.stringify(inputValue));
+          localStorage.removeItem("todos", JSON.stringify(todo));
         }
-
       } else {
         // create an AbortController instance to handle the abort signal
         AbortController();
@@ -75,18 +73,7 @@ $(document).ready(function () {
       event.originalEvent.dataTransfer.setData("text/plain", li.index());
     });
 
-    // save the todo list to local storage
-    let todoListItems = $("#todo-list li");
-    let todoListArray = [];
-    for (let i = 0; i < todoListItems.length; i++) {
-      if (i === todoListItems.length - 1) {
-        todoListArray.push(inputValue);
-      } else {
-        todoListArray.push(todoListItems[i].innerText.slice(0, -10));
-      }
-    }
-    localStorage.setItem("todoList", JSON.stringify(todoListArray));
-    li.append(inputValue);
+    li.append(todo);
     li.append(btnContainer);
   });
 
@@ -113,15 +100,14 @@ $(document).ready(function () {
     }
   });
 
-
   // retrieve the todo list from local storage
-  let retrievedTodoList = JSON.parse(localStorage.getItem("todoList"));
-  // $("#todo-list").empty();
+  let todos = getSaveTodoList();
   let retrievedTodoListButton = $(".button");
+
   retrievedTodoListButton.on("click", function () {
-    for (let i = 0; i < retrievedTodoList.length; i++) {
+    for (let todo of todos) {
       let li = $("<li></li>");
-      li.append(retrievedTodoList[i]);
+      li.append(todo);
       $("#todo-list").append(li);
       li.on("dblclick", function () {
         $(this).toggleClass("strike");
@@ -158,9 +144,9 @@ $(document).ready(function () {
           // confirm the deletion of the task
           if (confirm("Are you sure you want to delete this task?") === true) {
             li.remove();
-            localStorage.removeItem("todoList", JSON.stringify(retrievedTodoList[0]));
+            localStorage.removeItem("todos", JSON.stringify(todo));
           }
-          
+
         } else {
           //call the AbortController instance to handle the abort signal
           AbortController();
@@ -209,45 +195,39 @@ $(document).ready(function () {
         modal.append(modalContent);
         $("body").append(modal);
 
-        $("#edit-modal").css("display", "block");
-        // close the modal when the close button is clicked
-        close.on("click", function () {
-          $("#edit-modal").css("display", "none");
-        });
-
         // save the edited value to the list item when the save button is clicked
         save.on("click", function () {
-          let editedValue = $("#edit-input").val();
-          editedValue = editedValue.trim();
-          editedValue = editedValue.charAt(0).toUpperCase() + editedValue.slice(1);
-          editedValue = editedValue.replace(/\s+/g, " ");
-          let editedItem = $("#edit-input").val();
-          let editedItemIndex = $("#todo-list li").index(li);
-          let todoListItems = $("#todo-list li");
-          let todoListArray = [];
-          for (let i = 0; i < todoListItems.length; i++) {
-            if (i === editedItemIndex) {
-              todoListArray.push(editedItem);
-            } else {
-              todoListArray.push(todoListItems[i].innerText.slice(0, -10));
-            }
-          }
-          localStorage.setItem("todoList", JSON.stringify(todoListArray));
-          li.text(editedValue);
-          li.append(btnContainer);
-          $("#edit-modal").css("display", "none");
+          let editedTodo = editInput.val();
+          editedTodo += "  (edited)";
+          editedTodo = editedTodo.trim();
+          editedTodo = editedTodo.charAt(0).toUpperCase() + editedTodo.slice(1).toLowerCase();
+
+          let todos = getSaveTodoList();
+          let index = todos.indexOf(todo);
+          todos[index] = editedTodo;
+          saveTodoList(todos);
+
+          li.text(editedTodo);
+          $("#edit-modal").remove();
         });
+
+        // close the modal when the close button is clicked
+        close.on("click", function () {
+          $("#edit-modal").remove();
+        });
+
+
         // close the modal when click outside the modal
         modal.on("click", function (event) {
           if (event.target === modal[0]) {
-            modal.css("display", "none");
+            modal.remove();
           }
         });
 
         // close the modal when the escape key is pressed
         window.addEventListener("keydown", function (event) {
           if (event.key === "Escape") {
-            modal.css("display", "none");
+            modal.remove();
           }
         });
       });
@@ -265,14 +245,32 @@ $(document).ready(function () {
       });
     }
   });
+
 });
 
 
+// Dispay todo list
+function displayTodoList() {
+  let todoList = $("#todo-list");
+  let todos = getSaveTodoList();
+  todoList.empty();
+  todos.forEach((todo) => {
+    let li = $("<li></li>");
+    
+    li.text(todo);
+    todoList.append(li);
+  });
 
+}
 
+//save the todo list to local storage
+function saveTodoList(todos) {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
 
+// retrieve the todo list from local storage
+function getSaveTodoList() {
+  return JSON.parse(localStorage.getItem("todos")) || [];
+}
 
-
-
-
-
+displayTodoList();
