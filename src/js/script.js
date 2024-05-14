@@ -5,8 +5,8 @@ $(document).ready(function () {
     e.preventDefault();
     let inputValue = $("#todo-input").val();
     inputValue = inputValue.trim();
-    inputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-
+    inputValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(2);
+    inputValue = inputValue.replace(/\s+/g, " ");
 
     // create a li element and add the input value to it
     let li = $("<li></li>");
@@ -20,11 +20,22 @@ $(document).ready(function () {
       $("#todo-input").val("");
     }
 
+    // mark the list item as completed when double clicked
+    let checkbox = $("<input></input>");
+    checkbox.attr("type", "checkbox");
+    checkbox.attr("id", "checkbox");
+    checkbox.attr("class", "checkbox");
+    checkbox.prependTo(li);
+    checkbox.on("click", function () {
+      li.toggleClass("strike");
+    });
+
     // add a strike class to the list item when clicked
     li.on("dblclick", function () {
       $(this).toggleClass("strike");
     });
 
+    // create a buttons container
     let btnContainer = $("<div></div>");
 
     // create edit todo button
@@ -38,7 +49,20 @@ $(document).ready(function () {
     remove.text("Delete");
     // remove the list item when the remove button is clicked
     remove.on("click", function () {
-      li.remove();
+      if (!checkbox.prop("checked")) {
+        // alert the user to mark the task as completed before deleting it
+        alert("Please mark the task as completed before deleting it");
+      } else if (checkbox.prop("checked")) {
+        // confirm the deletion of the task
+        if (confirm("Are you sure you want to delete this task?") === true) {
+          li.remove();
+          localStorage.removeItem("todoList", JSON.stringify(inputValue));
+        }
+
+      } else {
+        // create an AbortController instance to handle the abort signal
+        AbortController();
+      }
     });
 
     // append the remove and edit button to the list item
@@ -58,7 +82,7 @@ $(document).ready(function () {
       if (i === todoListItems.length - 1) {
         todoListArray.push(inputValue);
       } else {
-        todoListArray.push(todoListItems[i].innerText.slice(0, -5));
+        todoListArray.push(todoListItems[i].innerText.slice(0, -10));
       }
     }
     localStorage.setItem("todoList", JSON.stringify(todoListArray));
@@ -89,6 +113,7 @@ $(document).ready(function () {
     }
   });
 
+
   // retrieve the todo list from local storage
   let retrievedTodoList = JSON.parse(localStorage.getItem("todoList"));
   // $("#todo-list").empty();
@@ -101,6 +126,17 @@ $(document).ready(function () {
       li.on("dblclick", function () {
         $(this).toggleClass("strike");
       });
+
+      // mark the list item as completed when double clicked
+      let checkbox = $("<input></input>");
+      checkbox.attr("type", "checkbox");
+      checkbox.attr("id", "checkbox");
+      checkbox.attr("class", "checkbox");
+      checkbox.prependTo(li);
+      checkbox.on("click", function () {
+        li.toggleClass("strike");
+      });
+
       // create a buttons container
       let btnContainer = $("<div></div>");
 
@@ -108,6 +144,29 @@ $(document).ready(function () {
       let edit = $("<button></button>");
       edit.addClass("btn-primary");
       edit.text("Edit");
+
+      // create a remove button
+      let remove = $("<button></button>");
+      remove.addClass("btn-danger");
+      remove.text("Delete");
+      // remove the list item when the remove button is clicked
+      remove.on("click", function () {
+        if (!checkbox.prop("checked")) {
+          alert("Please mark the task as completed before deleting it");
+
+        } else if (checkbox.prop("checked")) {
+          // confirm the deletion of the task
+          if (confirm("Are you sure you want to delete this task?") === true) {
+            li.remove();
+            localStorage.removeItem("todoList", JSON.stringify(retrievedTodoList[0]));
+          }
+          
+        } else {
+          //call the AbortController instance to handle the abort signal
+          AbortController();
+          location.replace(location.href.split('#')[0]);
+        }
+      });
 
       edit.on("click", function () {
         let modal = $("<div></div>");
@@ -133,12 +192,13 @@ $(document).ready(function () {
         let editInput = $("<input></input>");
         editInput.attr("type", "text");
         editInput.attr("id", "edit-input");
-        editInput.val(li.text().slice(0, -5));
+        editInput.val(li.text().slice(0, -10));
 
+        // create a save button
         let save = $("<button></button>");
         save.addClass("btn-primary");
         save.text("Save");
-        
+
         modalHeader.append(modalTitle);
         modalHeader.append(close);
         modalBody.append(editInput);
@@ -150,6 +210,7 @@ $(document).ready(function () {
         $("body").append(modal);
 
         $("#edit-modal").css("display", "block");
+        // close the modal when the close button is clicked
         close.on("click", function () {
           $("#edit-modal").css("display", "none");
         });
@@ -168,7 +229,7 @@ $(document).ready(function () {
             if (i === editedItemIndex) {
               todoListArray.push(editedItem);
             } else {
-              todoListArray.push(todoListItems[i].innerText.slice(0, -5));
+              todoListArray.push(todoListItems[i].innerText.slice(0, -10));
             }
           }
           localStorage.setItem("todoList", JSON.stringify(todoListArray));
@@ -176,13 +237,14 @@ $(document).ready(function () {
           li.append(btnContainer);
           $("#edit-modal").css("display", "none");
         });
-
+        // close the modal when click outside the modal
         modal.on("click", function (event) {
           if (event.target === modal[0]) {
             modal.css("display", "none");
           }
         });
 
+        // close the modal when the escape key is pressed
         window.addEventListener("keydown", function (event) {
           if (event.key === "Escape") {
             modal.css("display", "none");
@@ -190,18 +252,12 @@ $(document).ready(function () {
         });
       });
 
-      // create a remove button
-      let remove = $("<button></button>");
-      remove.addClass("btn-danger");
-      remove.text("Delete");
-      remove.on("click", function () {
-        li.remove();
-      });
-
       // append the remove and edit button to the list item
+
       btnContainer.append(edit);
       btnContainer.append(remove);
       li.append(btnContainer);
+
       // make the list items draggable
       li.attr("draggable", true);
       li.on("dragstart", function (event) {
