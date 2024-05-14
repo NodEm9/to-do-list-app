@@ -10,6 +10,8 @@ body {
   line-height: 1.6;
   font-size: 16px;
   text-align: center;
+  min-height: 100vh;
+  overflow: auto;
 }
 
 .container {
@@ -123,7 +125,7 @@ ol li:nth-child(even) {
   color: #999;
 }
 
-.modal {
+.modal  {
   position: fixed;
   z-index: 1;
   left: 0;
@@ -155,6 +157,10 @@ ol li:nth-child(even) {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.is-visible {
+  display: block;
 }
 
 #edit-input {
