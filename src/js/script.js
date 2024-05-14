@@ -257,6 +257,7 @@ function displayTodoList() {
   todoList.empty();
   todos.forEach((todo) => {
     let li = $("<li></li>");
+    li.addClass("list-group-item")
     li.text(todo);
     todoList.append(li);
   });
